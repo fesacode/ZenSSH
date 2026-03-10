@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:encrypt/encrypt.dart'; // Added encryption package
 
 class Connection {
   final String host;
@@ -11,10 +12,16 @@ class Connection {
 }
 
 class ConnectionManager {
+  final key = Key.fromLength(32); // In production, store this securely
+  final iv = IV.fromLength(16);
+
   Future<void> saveConnection(Connection conn) async {
+    final encrypter = Encrypter(AES(key));
+    final encrypted = encrypter.encrypt(jsonEncode(conn.toJson()), iv: iv);
+    
     final prefs = await SharedPreferences.getInstance();
     final list = prefs.getStringList('connections') ?? [];
-    list.add(jsonEncode(conn.toJson()));
+    list.add(encrypted.base64);
     await prefs.setStringList('connections', list);
   }
 }
