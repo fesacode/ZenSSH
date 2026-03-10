@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'terminal_view.dart';
 
 void main() {
   runApp(const ZenSSHApp());
@@ -11,11 +12,8 @@ class ZenSSHApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'ZenSSH',
-      theme: ThemeData(primarySwatch: Colors.blue),
-      home: Scaffold(
-        appBar: AppBar(title: const Text('ZenSSH Terminal')),
-        body: const Center(child: Text('ZenSSH Starting Soon...')),
-      ),
+      theme: ThemeData.dark(),
+      home: const TerminalScreen(),
     );
   }
 }
